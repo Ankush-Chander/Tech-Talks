@@ -66,3 +66,11 @@ if __name__ == '__main__':
     # print(randomlist)
     sorted_list = merge_sort(randomlist)
     # print(randomlist)
+
+"""
+time python3 -u merge_sort.py  10000
+
+real	0m0.096s
+user	0m0.083s
+sys	0m0.013s
+"""
