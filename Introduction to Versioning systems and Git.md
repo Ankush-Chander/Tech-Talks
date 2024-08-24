@@ -107,6 +107,7 @@ git config --global user.email "youremail@domain.com"
 ---
 ##### Git Workflow
 ![](https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwebipedia.es%2Fwp-content%2Fuploads%2F2018%2F09%2F26_FlujoTrabajo.jpg&f=1&nofb=1&ipt=f33c28b30114bec9fdbdbaf9d49745c39d791238760c583bab1e2dddeb619825&ipo=images)
+Pic credit: [Git introduction](https://zigabrencic.com/blog/2020-02-18)
 
 ---
 #### Working folder <=> staging area 
