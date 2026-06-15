@@ -1,0 +1,1305 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.7">
+    
+    
+      
+        <title>Graph Representation Tradeoffs: When Format Begets Algorithm - Graphs – ACM Summer School 2026</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.8608ea7d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/slides/css/slides.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#graph-representation-tradeoffs-when-format-begets-algorithm" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Graphs – ACM Summer School 2026" class="md-header__button md-logo" aria-label="Graphs – ACM Summer School 2026" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Graphs – ACM Summer School 2026
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Graph Representation Tradeoffs: When Format Begets Algorithm
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Graphs – ACM Summer School 2026" class="md-nav__button md-logo" aria-label="Graphs – ACM Summer School 2026" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Graphs – ACM Summer School 2026
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Sessions
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Sessions
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../graph_basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Graph Basics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notebooks/pagerank_fear/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PageRank: Who is the Most Fearsome?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../graph_representations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Graph Representations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../representation_tradeoffs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Representation Tradeoffs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Graph Traversal
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Graph Traversal
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dfs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Depth First Search
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bfs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Breadth-First Search
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Graph algorithms
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            Graph algorithms
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_1" id="__nav_2_6_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Shortest path algorithms
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            Shortest path algorithms
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../djikstra/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Djikstra algorithm
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bellford/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bellman Ford algorithm
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../minimum_spanning_tree/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spanning trees
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../graph_modelling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Graph Modelling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Idea
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-example-connectivity-via-matrix-multiplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Example: Connectivity via Matrix Multiplication
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Example: Connectivity via Matrix Multiplication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adjacency-matrix-representation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adjacency Matrix Representation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adjacency Matrix Representation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-mathematical-insight" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Mathematical Insight
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happened" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happened?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adjacency-list-representation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adjacency List Representation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#critique-of-this-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Critique of This Example
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Critique of This Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-it-works-strengths" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where It Works (Strengths)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-it-falls-short-weaknesses" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where It Falls Short (Weaknesses)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Where It Falls Short (Weaknesses)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-asymptotic-performance-isnt-the-point-and-it-loses-anyway" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Asymptotic performance isn't the point — and it loses anyway
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-warshalls-algorithm-muddies-the-waters" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Warshall's algorithm muddies the waters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-dense-graph-bias" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Dense-graph bias
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-what-problem-is-this-actually-solving" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. What problem is this actually solving?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verdict
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verdict">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#keep-the-example-but-frame-it-correctly" class="md-nav__link">
+    <span class="md-ellipsis">
+      Keep the Example, But Frame It Correctly
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-teach-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Teach This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#broader-pattern-representation-dictates-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Broader Pattern: Representation Dictates Algorithm
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#worked-example-adjacency-list-wins-single-source-shortest-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      Worked Example: Adjacency List Wins — Single-Source Shortest Path
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Worked Example: Adjacency List Wins — Single-Source Shortest Path">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adjacency-list-ov-e" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adjacency List — O(V + E)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adjacency-matrix-ov2-always" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adjacency Matrix — O(V²) Always
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concrete-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concrete Numbers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-this-is-a-better-example-than-matrix-multiplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why This Is a Better Example Than Matrix Multiplication
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-two-complementary-lessons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary: Two Complementary Lessons
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="graph-representation-tradeoffs-when-format-begets-algorithm">Graph Representation Tradeoffs: When Format Begets Algorithm</h1>
+<h2 id="the-idea">The Idea</h2>
+<p>The way you represent a graph doesn't just affect constant factors — it can <strong>suggest entirely different algorithms</strong> for the same problem. A representation that makes one approach natural may make another nearly impossible without reformulation.</p>
+<p>This document examines one such case and critiques it honestly.</p>
+<hr />
+<h2 id="the-example-connectivity-via-matrix-multiplication">The Example: Connectivity via Matrix Multiplication</h2>
+<h3 id="problem">Problem</h3>
+<p>Given a directed graph, determine whether there exists a path from vertex <code>i</code> to vertex <code>j</code> for all pairs <code>(i, j)</code>. This is the <strong>all-pairs reachability</strong> (transitive closure) problem.</p>
+<hr />
+<h3 id="adjacency-matrix-representation">Adjacency Matrix Representation</h3>
+<p>Let <code>A</code> be the adjacency matrix where:</p>
+<pre><code>A[i][j] = 1  if edge i → j exists
+A[i][j] = 0  otherwise
+</code></pre>
+<h4 id="key-mathematical-insight">Key Mathematical Insight</h4>
+<p>Under <strong>Boolean arithmetic</strong> (where <code>1 + 1 = 1</code> and normal multiplication applies):</p>
+<ul>
+<li><code>(A²)[i][j] &gt; 0</code> ⟺ there exists a path of length <strong>2</strong> from <code>i</code> to <code>j</code></li>
+<li><code>(Aᵏ)[i][j] &gt; 0</code> ⟺ there exists a path of length <strong>k</strong> from <code>i</code> to <code>j</code></li>
+<li>Since longest simple path ≤ V − 1:</li>
+</ul>
+<pre><code>Reachability matrix = (I + A)^(V-1)   [computed under Boolean arithmetic]
+</code></pre>
+<p>In C++ with <code>std::bitset</code>, this becomes clean and fast:</p>
+<pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+using Matrix = vector&lt;bitset&lt;100&gt;&gt;; // assume V &lt; 100
+
+Matrix multiply(const Matrix&amp; A, const Matrix&amp; B, int V) {
+    Matrix C(V);
+    for (int i = 0; i &lt; V; ++i)
+        for (int k = 0; k &lt; V; ++k)
+            if (A[i][k])
+                C[i] |= B[k]; // Boolean OR of entire row
+    return C;
+}
+
+Matrix transitiveClosure(Matrix A, int V) {
+    Matrix R(V);
+    for (int i = 0; i &lt; V; ++i) R[i].set(i); // identity
+
+    Matrix P = A;
+    P += R; // I + A
+
+    // Binary exponentiation: (I + A)^(V-1) under Boolean mult
+    int exp = V - 1;
+    while (exp &gt; 0) {
+        if (exp &amp; 1) R = multiply(R, P, V);
+        P = multiply(P, P, V);
+        exp &gt;&gt;= 1;
+    }
+    return R;
+}
+</code></pre>
+<h4 id="what-happened">What Happened?</h4>
+<p>The problem of "does a path exist?" collapsed into <strong>matrix multiplication and exponentiation</strong>. No BFS, no DFS, no recursion — just algebra. The representation <strong>encoded the graph as a linear-algebra object</strong>, so we inherited everything linear algebra offers: decomposition, composition, fast algorithms, parallelism-friendly operations.</p>
+<hr />
+<h3 id="adjacency-list-representation">Adjacency List Representation</h3>
+<p>Now consider the same problem with an adjacency list. You <strong>cannot</strong> multiply adjacency lists. Instead, you must reason logically:</p>
+<pre><code class="language-cpp">// BFS/DFS from every vertex — O(V(V + E))
+vector&lt;vector&lt;bool&gt;&gt; reachFromAL(int V, const vector&lt;vector&lt;int&gt;&gt;&amp; adj) {
+    vector&lt;vector&lt;bool&gt;&gt; reachable(V, vector&lt;bool&gt;(V, false));
+
+    for (int src = 0; src &lt; V; ++src) {
+        queue&lt;int&gt; q;
+        vector&lt;bool&gt; visited(V, false);
+        q.push(src);
+        visited[src] = true;
+        reachable[src][src] = true;
+
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            for (int v : adj[u]) {
+                if (!visited[v]) {
+                    visited[v] = true;
+                    reachable[src][v] = true;
+                    q.push(v);
+                }
+            }
+        }
+    }
+    return reachable;
+}
+</code></pre>
+<p>Here, the algorithm requires you to <strong>invent traversal logic</strong> — queue management, visited arrays, nested loops. The adjacency list represents sparsity and topology faithfully but offers no algebraic structure to exploit.</p>
+<hr />
+<h2 id="critique-of-this-example">Critique of This Example</h2>
+<h3 id="where-it-works-strengths">Where It Works (Strengths)</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Demonstrates representation-driven algorithm shift</td>
+<td>✅ Strong — matrix mult is a fundamentally different algorithm than BFS</td>
+</tr>
+<tr>
+<td>Mathematically elegant</td>
+<td>✅ Path existence ⟺ matrix entry &gt; 0 is clean and provable</td>
+</tr>
+<tr>
+<td>Bitset optimization is practical</td>
+<td>✅ <code>bitset&lt;100&gt;</code> makes the O(1) inner OR operation viable even without fast matrix multiplication</td>
+</tr>
+</tbody>
+</table>
+<h3 id="where-it-falls-short-weaknesses">Where It Falls Short (Weaknesses)</h3>
+<h4 id="1-asymptotic-performance-isnt-the-point-and-it-loses-anyway">1. Asymptotic performance isn't the point — and it loses anyway</h4>
+<table>
+<thead>
+<tr>
+<th>Representation</th>
+<th>Naive time with its idiomatic algorithm</th>
+<th>With optimization</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Adjacency matrix + matrix mult</td>
+<td>O(V³) per multiplication, O(V·log V) multiplications → <strong>O(V⁴ log V)</strong> total</td>
+<td>Binary exponentiation helps; using Strassen or Coppersmith–Winograd, each multiply is Õ(V^2.373), total Õ(V^3.373 log V). Warshall's algorithm on the matrix representation is O(V³) and simpler but doesn't use multiplication per se</td>
+</tr>
+<tr>
+<td>Adjacency list + BFS from each node</td>
+<td><strong>O(V(V + E))</strong> = O(V² + VE)</td>
+<td>For sparse graphs (E ≈ V), this is <strong>O(V²)</strong>. Matrix mult blows it out of the water</td>
+</tr>
+</tbody>
+</table>
+<p>The example's strength isn't speed — adjacency lists win asymptotically for sparse graphs. The strength is that it <strong>eliminates algorithm design</strong>: you don't invent BFS; you raise a matrix to a power.</p>
+<h4 id="2-warshalls-algorithm-muddies-the-waters">2. Warshall's algorithm muddies the waters</h4>
+<p>Floyd-Warshall (or just Warshall for reachability) operates on an adjacency matrix and runs in O(V³):</p>
+<pre><code class="language-cpp">vector&lt;vector&lt;bool&gt;&gt; warshall(int V, vector&lt;vector&lt;int&gt;&gt; R) {
+    for (int k = 0; k &lt; V; ++k)
+        for (int i = 0; i &lt; V; ++i)
+            for (int j = 0; j &lt; V; ++j)
+                R[i][j] = R[i][j] || (R[i][k] &amp;&amp; R[k][j]);
+    return R;
+}
+</code></pre>
+<p>This is arguably the "correct" matrix-based reachability algorithm — simple, O(V³), no exponentiation needed. The matrix multiplication framing adds mathematical elegance but isn't the most practical choice. Consider both and note that <strong>Warshall's is what you'd actually write in competition.</strong></p>
+<h4 id="3-dense-graph-bias">3. Dense-graph bias</h4>
+<p>Adjacency matrices consume O(V²) space regardless of edges. For V = 10⁵, E = 10⁵, the matrix wastes ~64 GB while an adjacency list uses a few MB. The example only makes sense for <strong>small or dense</strong> graphs — a limitation worth calling out explicitly.</p>
+<h4 id="4-what-problem-is-this-actually-solving">4. What problem is this actually solving?</h4>
+<p>All-pairs reachability via matrix multiplication is intellectually satisfying but rarely needed. Single-source shortest path (BFS/Dijkstra), connectivity check (DFS/DSU), and topological sort are what people actually solve. The example shines in a pedagogical setting but has narrow practical relevance.</p>
+<hr />
+<h2 id="verdict">Verdict</h2>
+<h3 id="keep-the-example-but-frame-it-correctly">Keep the Example, But Frame It Correctly</h3>
+<p>This example works well as a demonstration that <strong>representation changes the problem-solving paradigm</strong>, not as a performance recommendation. The takeaway:</p>
+<blockquote>
+<p>An adjacency matrix lets you treat graph problems as linear-algebra problems. You trade generality and asymptotic efficiency for elegance, composability, and access to a rich toolkit (decomposition, parallelization, hardware acceleration). The algorithm "writes itself" once you commit to the right representation.</p>
+</blockquote>
+<h3 id="when-to-teach-this">When to Teach This</h3>
+<ul>
+<li><strong>Pedagogical</strong>: Shows that "choosing data structures is choosing algorithms" — a deep CS insight</li>
+<li><strong>Practical</strong>: Limited to small or dense graphs, or when bitset tricks make matrix ops feasible (V ≤ ~10⁴ with 64-way packing)</li>
+<li><strong>Interviews</strong>: Recognizing the reachability ⟺ matrix entry equivalence is impressive, but follow-through on complexity matters</li>
+</ul>
+<hr />
+<h2 id="broader-pattern-representation-dictates-algorithm">Broader Pattern: Representation Dictates Algorithm</h2>
+<table>
+<thead>
+<tr>
+<th>Graph Problem</th>
+<th>Adjacency List enables...</th>
+<th>Adjacency Matrix enables...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reachability</td>
+<td>BFS/DFS traversal</td>
+<td>Matrix exponentiation or Warshall's</td>
+</tr>
+<tr>
+<td>Shortest path (unweighted)</td>
+<td>Single-source BFS in O(V + E)</td>
+<td>Warshall-Floyd over all pairs</td>
+</tr>
+<tr>
+<td>Connected components</td>
+<td>Union-Find on edges, DFS per component</td>
+<td>Spectral clustering via eigendecomposition of Laplacian</td>
+</tr>
+<tr>
+<td>PageRank / centrality</td>
+<td>Iterative neighbor walks</td>
+<td>Eigenvector of adjacency matrix power method (same idea, but matrix view suggests SVD, Rayleigh quotient)</td>
+</tr>
+</tbody>
+</table>
+<p>The pattern: <strong>adjacency lists</strong> invite graph-traversal thinking; <strong>adjacency matrices</strong> invite linear-algebra thinking. Neither is universally better — they open different doors to the same rooms.</p>
+<hr />
+<h2 id="worked-example-adjacency-list-wins-single-source-shortest-path">Worked Example: Adjacency List Wins — Single-Source Shortest Path</h2>
+<h3 id="problem_1">Problem</h3>
+<p>Find the shortest distance (by number of edges) from vertex <code>s</code> to every other vertex in an unweighted graph.</p>
+<p>Both representations can solve this via BFS. But the work each BFS step does is <strong>drastically different</strong>.</p>
+<hr />
+<h3 id="adjacency-list-ov-e">Adjacency List — O(V + E)</h3>
+<pre><code class="language-cpp">vector&lt;int&gt; bfsShortestPath(int s, int V, const vector&lt;vector&lt;int&gt;&gt;&amp; adj) {
+    vector&lt;int&gt; dist(V, -1);
+    queue&lt;int&gt; q;
+
+    dist[s] = 0;
+    q.push(s);
+
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+
+        for (int v : adj[u]) {            // iterate only over existing edges
+            if (dist[v] == -1) {
+                dist[v] = dist[u] + 1;
+                q.push(v);
+            }
+        }
+    }
+    return dist;
+}
+</code></pre>
+<p>Each vertex is enqueued once. Across the entire run, <strong>every edge in <code>adj</code> is looked at exactly once</strong>. Total work: touch every vertex + scan every adjacency list = <strong>O(V + E)</strong>.</p>
+<hr />
+<h3 id="adjacency-matrix-ov2-always">Adjacency Matrix — O(V²) Always</h3>
+<pre><code class="language-cpp">vector&lt;int&gt; bfsShortestPath(int s, int V, const vector&lt;vector&lt;int&gt;&gt;&amp; adjMat) {
+    vector&lt;int&gt; dist(V, -1);
+    queue&lt;int&gt; q;
+
+    dist[s] = 0;
+    q.push(s);
+
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+
+        for (int v = 0; v &lt; V; ++v) {         // scan entire row, no matter what
+            if (adjMat[u][v] &amp;&amp; dist[v] == -1) {
+                dist[v] = dist[u] + 1;
+                q.push(v);
+            }
+        }
+    }
+    return dist;
+}
+</code></pre>
+<p>To find neighbors of <code>u</code>, you <strong>must scan the entire V-length row</strong>, even if <code>u</code> has degree 1 or 2. Every dequeued vertex costs O(V). Over V vertices: <strong>O(V²)</strong>, regardless of how many edges actually exist.</p>
+<hr />
+<h3 id="concrete-numbers">Concrete Numbers</h3>
+<table>
+<thead>
+<tr>
+<th>Graph</th>
+<th>E (edges)</th>
+<th>Adjacency list BFS</th>
+<th>Adjacency matrix BFS</th>
+<th>Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sparse, V = 10⁵, E = 5·10⁵</td>
+<td>500K</td>
+<td>O(6·10⁵) ≈ <strong>~6·10⁵ ops</strong></td>
+<td>O(10¹⁰) ≈ <strong>10¹⁰ ops</strong></td>
+<td><strong>~17,000× slower</strong></td>
+</tr>
+<tr>
+<td>Sparse, V = 10³, E = 2·10³</td>
+<td>2K</td>
+<td>O(3·10³)</td>
+<td>O(10⁶)</td>
+<td>~300× slower</td>
+</tr>
+<tr>
+<td>Dense, V = 500, E ≈ 2.5·10⁵</td>
+<td>250K</td>
+<td>O(2.5·10⁵ + 500)</td>
+<td>O(2.5·10⁵)</td>
+<td><strong>same</strong> (E ≈ V²/2, so no gap)</td>
+</tr>
+</tbody>
+</table>
+<p>The adjacency matrix is O(V²) <strong>always</strong>. The adjacency list pays only for edges that exist. On sparse graphs — which are the vast majority of real-world graphs (social networks, road maps, dependency DAGs) — the gap is enormous.</p>
+<hr />
+<h3 id="why-this-is-a-better-example-than-matrix-multiplication">Why This Is a Better Example Than Matrix Multiplication</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Single-source BFS (this example)</th>
+<th>All-pairs reachability via matrix mult</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Both representations solve it directly</strong></td>
+<td>✅ Same BFS algorithm, just different neighbor lookup</td>
+<td>❌ Matrix enables algebra; list forces per-source BFS — different algorithms entirely</td>
+</tr>
+<tr>
+<td><strong>One representation is asymptotically better</strong></td>
+<td>✅ List: O(V+E) beats matrix's hard O(V²)</td>
+<td>⚠️ Depends on graph density — list wins sparse, tie/lose dense</td>
+</tr>
+<tr>
+<td><strong>Gap is clean and provable</strong></td>
+<td>✅ Every BFS step in the matrix version wastes work scanning zeros — waste proportional to V − deg(u) per dequeue</td>
+<td>⚠️ Warshall's O(V³) vs BFS-from-each-node O(V·E) depends on E/V ratio; no single winner</td>
+</tr>
+<tr>
+<td><strong>Practical relevance</strong></td>
+<td>✅ Single-source shortest path is one of the most common graph problems</td>
+<td>⚠️ All-pairs reachability needed less often</td>
+</tr>
+</tbody>
+</table>
+<p>This example demonstrates that <strong>even when the algorithm stays the same</strong>, the representation injects hidden per-step costs. The adjacency matrix doesn't change what BFS <em>does</em> — it changes how much BFS <em>pays</em> to discover each neighbor.</p>
+<hr />
+<h2 id="summary-two-complementary-lessons">Summary: Two Complementary Lessons</h2>
+<table>
+<thead>
+<tr>
+<th>Lesson</th>
+<th>Demonstrated by...</th>
+<th>Takeaway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Representation changes <strong>which algorithm</strong> you write</td>
+<td>Matrix multiplication for reachability</td>
+<td>Right format → elegant, self-writing solution</td>
+</tr>
+<tr>
+<td>Representation changes <strong>how fast</strong> the same algorithm runs</td>
+<td>BFS on adjacency list vs matrix</td>
+<td>Right format → fewer wasted operations per step</td>
+</tr>
+</tbody>
+</table>
+<p>Together: choose a representation that both <strong>suggests</strong> a good algorithm and <strong>executes</strong> it without hidden overhead.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "toc.follow"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../assets/slides/js/slides.js"></script>
+      
+    
+  </body>
+</html>

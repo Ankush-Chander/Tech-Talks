@@ -1,0 +1,1264 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../dfs/">
+      
+      
+        <link rel="next" href="../djikstra/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.7">
+    
+    
+      
+        <title>Breadth-First Search - Graphs – ACM Summer School 2026</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.8608ea7d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/slides/css/slides.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#breadth-first-search-bfs-in-c" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Graphs – ACM Summer School 2026" class="md-header__button md-logo" aria-label="Graphs – ACM Summer School 2026" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Graphs – ACM Summer School 2026
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Breadth-First Search
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Graphs – ACM Summer School 2026" class="md-nav__button md-logo" aria-label="Graphs – ACM Summer School 2026" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Graphs – ACM Summer School 2026
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Sessions
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Sessions
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../graph_basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Graph Basics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notebooks/pagerank_fear/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PageRank: Who is the Most Fearsome?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../graph_representations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Graph Representations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../representation_tradeoffs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Representation Tradeoffs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Graph Traversal
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Graph Traversal
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dfs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Depth First Search
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Breadth-First Search
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Breadth-First Search
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-is-bfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What Is BFS?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Implementation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Details
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-how-it-works-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-bfs-vs-dfs-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. BFS vs DFS at a Glance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-common-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Common Applications
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Common Applications">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shortest-path-in-unweighted-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shortest Path in Unweighted Graph
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-order-traversal-of-a-binary-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      Level-Order Traversal of a Binary Tree
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connected-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connected Components
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bipartite-graph-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bipartite Graph Check
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Complexity
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-gotchas" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Gotchas
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-tldr" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. TL;DR
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Graph algorithms
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            Graph algorithms
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_1" id="__nav_2_6_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Shortest path algorithms
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            Shortest path algorithms
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../djikstra/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Djikstra algorithm
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bellford/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bellman Ford algorithm
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../minimum_spanning_tree/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spanning trees
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../graph_modelling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Graph Modelling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-is-bfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What Is BFS?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Implementation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Details
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-how-it-works-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-bfs-vs-dfs-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. BFS vs DFS at a Glance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-common-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Common Applications
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Common Applications">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shortest-path-in-unweighted-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shortest Path in Unweighted Graph
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-order-traversal-of-a-binary-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      Level-Order Traversal of a Binary Tree
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connected-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connected Components
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bipartite-graph-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bipartite Graph Check
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Complexity
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-gotchas" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Gotchas
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-tldr" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. TL;DR
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="breadth-first-search-bfs-in-c">Breadth-First Search (BFS) in C++</h1>
+<h2 id="1-what-is-bfs">1. What Is BFS?</h2>
+<p>BFS explores a graph <strong>level by level</strong>, visiting all neighbors of a node before moving to the next level. It uses a <strong>queue</strong> (FIFO) to ensure nodes are processed in order of their distance from the source.</p>
+<hr />
+<h2 id="2-implementation">2. Implementation</h2>
+<pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+void bfs(int x, const vector&lt;vector&lt;int&gt;&gt;&amp; adj) {
+    int n = adj.size();
+    vector&lt;bool&gt; visited(n, false);
+    vector&lt;int&gt; distance(n, 0);
+    queue&lt;int&gt; q;
+
+    visited[x] = true;
+    distance[x] = 0;
+    q.push(x);
+
+    while (!q.empty()) {
+        int s = q.front();
+        q.pop();
+
+        // process node s
+        cout &lt;&lt; s &lt;&lt; &quot; &quot;;
+
+        for (auto u : adj[s]) {
+            if (visited[u]) continue;
+            visited[u] = true;
+            distance[u] = distance[s] + 1;
+            q.push(u);
+        }
+    }
+}
+</code></pre>
+<h3 id="key-details">Key Details</h3>
+<ul>
+<li>A node is marked <code>visited</code> <strong>at push time</strong> (when enqueued), not at pop time. This prevents duplicates in the queue.</li>
+<li>The <code>distance[]</code> array tracks shortest-path length from source. Since BFS visits level by level, the first time a node is reached is guaranteed to be via the minimum number of edges.</li>
+<li>The <code>if (visited[u]) continue;</code> pattern keeps the inner loop clean and avoids nested conditionals.</li>
+</ul>
+<hr />
+<h2 id="3-how-it-works-step-by-step">3. How It Works Step by Step</h2>
+<p>Consider this graph:</p>
+<pre><code>        0
+       / \
+      1   2
+     / \   \
+    3   4   5
+</code></pre>
+<p>Starting BFS from node <code>0</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Queue (front → back)</th>
+<th>Visited order so far</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>[0]</code></td>
+<td>—</td>
+<td>Push start, mark visited</td>
+</tr>
+<tr>
+<td>2</td>
+<td>pop <code>0</code>, push <code>1</code>,<code>2</code></td>
+<td><code>0</code></td>
+<td>Enqueue neighbors of 0</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>[1, 2]</code></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>4</td>
+<td>pop <code>1</code>, push <code>3</code>,<code>4</code></td>
+<td><code>0 1</code></td>
+<td>Enqueue neighbors of 1</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>[2, 3, 4]</code></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>6</td>
+<td>pop <code>2</code>, push <code>5</code></td>
+<td><code>0 1 2</code></td>
+<td>Enqueue neighbor of 2</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>[3, 4, 5]</code></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Drain queue</td>
+<td><code>0 1 2 3 4 5</code></td>
+<td>No new neighbors</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Output:</strong> <code>0 1 2 3 4 5</code> (level-order traversal)</p>
+<hr />
+<h2 id="4-bfs-vs-dfs-at-a-glance">4. BFS vs DFS at a Glance</h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>BFS</th>
+<th>DFS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data structure</strong></td>
+<td>Queue (FIFO)</td>
+<td>Stack / Recursion (LIFO)</td>
+</tr>
+<tr>
+<td><strong>Exploration order</strong></td>
+<td>Level by level (breadth first)</td>
+<td>Deep into one branch first</td>
+</tr>
+<tr>
+<td><strong>Shortest path</strong></td>
+<td>Finds shortest path in unweighted graphs</td>
+<td>Does not guarantee shortest path</td>
+</tr>
+<tr>
+<td><strong>Memory usage</strong></td>
+<td>Can be large (stores entire frontier)</td>
+<td>Proportional to max depth</td>
+</tr>
+<tr>
+<td><strong>Completeness</strong></td>
+<td>Guaranteed to find a node if it exists</td>
+<td>May get stuck in infinite branches (if no visited check)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-common-applications">5. Common Applications</h2>
+<h3 id="shortest-path-in-unweighted-graph">Shortest Path in Unweighted Graph</h3>
+<p>BFS guarantees the first time a node is reached, it is via the shortest path (minimum number of edges).</p>
+<pre><code class="language-cpp">// Returns minimum number of edges from source to target (-1 if unreachable)
+int shortestPath(int src, int target, const vector&lt;vector&lt;int&gt;&gt;&amp; adj) {
+    if (src == target) return 0;
+
+    int n = adj.size();
+    vector&lt;bool&gt; visited(n, false);
+    vector&lt;int&gt; distance(n, 0);
+    queue&lt;int&gt; q;
+
+    visited[src] = true;
+    distance[src] = 0;
+    q.push(src);
+
+    while (!q.empty()) {
+        int s = q.front();
+        q.pop();
+
+        for (auto u : adj[s]) {
+            if (visited[u]) continue;
+
+            visited[u] = true;
+            distance[u] = distance[s] + 1;
+
+            if (u == target) return distance[u];
+
+            q.push(u);
+        }
+    }
+    return -1; // unreachable
+}
+</code></pre>
+<h3 id="level-order-traversal-of-a-binary-tree">Level-Order Traversal of a Binary Tree</h3>
+<p>Same idea — queue holds nodes level by level.</p>
+<h3 id="connected-components">Connected Components</h3>
+<p>Run BFS from every unvisited node to enumerate all connected components.</p>
+<h3 id="bipartite-graph-check">Bipartite Graph Check</h3>
+<p>Use BFS to 2-color the graph. If any edge connects two same-colored nodes, the graph is not bipartite.</p>
+<pre><code class="language-cpp">bool isBipartite(int n, const vector&lt;vector&lt;int&gt;&gt;&amp; adj) {
+    vector&lt;int&gt; color(n, 0); // 0 = uncolored, 1 and -1 = two colors
+
+    for (int i = 0; i &lt; n; ++i) {
+        if (color[i] != 0) continue;
+
+        queue&lt;int&gt; q;
+        q.push(i);
+        color[i] = 1;
+
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+
+            for (int v : adj[u]) {
+                if (color[v] == 0) {
+                    color[v] = -color[u];
+                    q.push(v);
+                } else if (color[v] == color[u]) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+</code></pre>
+<hr />
+<h2 id="6-complexity">6. Complexity</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Time</strong></td>
+<td>O(V + E) — each vertex and edge visited once</td>
+</tr>
+<tr>
+<td><strong>Space</strong></td>
+<td>O(V) — queue + visited array, at most V entries</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>V</code> = number of vertices</li>
+<li><code>E</code> = number of edges</li>
+</ul>
+<hr />
+<h2 id="7-gotchas">7. Gotchas</h2>
+<ul>
+<li><strong>Mark before enqueue</strong>: Failing to mark <code>visited</code> at push time causes duplicate entries in the queue → TLE or incorrect results.</li>
+<li><strong>Disconnected graphs</strong>: BFS from one source only reaches its component. Loop over all vertices to cover the full graph.</li>
+<li><strong>Weighted graphs</strong>: BFS does <strong>not</strong> find shortest paths by weight. Use Dijkstra's or Bellman-Ford instead.</li>
+</ul>
+<hr />
+<h2 id="8-tldr">8. TL;DR</h2>
+<ul>
+<li>BFS uses a <strong>queue</strong> to explore level by level.</li>
+<li>Same O(V + E) time as DFS, but higher peak memory on wide graphs.</li>
+<li>Go-to algorithm for: shortest path, level-order traversal, bipartite check, component discovery.</li>
+</ul>
+<h1 id="references">References</h1>
+<ol>
+<li><a href="https://www.cs.usfca.edu/~galles/visualization/BFS.html">BFS visualization</a></li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "toc.follow"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../assets/slides/js/slides.js"></script>
+      
+    
+  </body>
+</html>
