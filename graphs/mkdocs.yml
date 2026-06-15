@@ -1,0 +1,35 @@
+site_name: "Graphs – ACM Summer School 2026"
+docs_dir: docs
+
+nav:
+  - Home: index.md
+  - Sessions:
+      - Graph Basics: sessions/graph_basics.md
+      - Motivation: notebooks/pagerank_fear.ipynb
+      - Graph Representations: sessions/graph_representations.md
+      - Representation Tradeoffs: sessions/representation_tradeoffs.md
+      - Graph Traversal:
+          - Depth First Search: sessions/dfs.md
+          - Breadth-First Search: sessions/bfs.md
+      - Graph algorithms:
+          - Shortest path algorithms:
+              - Djikstra algorithm: sessions/djikstra.md
+              - Bellman Ford algorithm: sessions/bellford.md
+          - Spanning trees: sessions/minimum_spanning_tree.md
+      # - Directed Graphs:
+      #     - Topological sorting: topological_sort.md
+      - Graph Modelling: sessions/graph_modelling.md
+
+plugins:
+  - to-pdf
+  - search
+  - slides
+  - mkdocs-jupyter:
+      include_source: true
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - toc.follow

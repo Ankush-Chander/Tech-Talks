@@ -1,0 +1,9 @@
+mkdocs
+jupyter
+networkx
+scipy
+matplotlib
+mkdocs-slides
+mkdocs-material
+mkdocs-jupyter
+mkdocs-to-pdf
