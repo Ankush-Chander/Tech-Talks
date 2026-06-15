@@ -9,15 +9,30 @@
 
 ### Quick start
 
-```bash
-# 1. Clone the repository
-git clone <repo-url>
-cd graphs
+You can download just this `graphs/` folder without cloning the full repository:
 
-# 2. Install dependencies
+**Option A — Download as ZIP (recommended)**
+
+1. Go to the [`graphs/` directory on GitHub](https://github.com/Ankush-Chander/Tech-Talks/tree/master/graphs)
+2. Click **Code → Download Folder** (or use a tool like [GitZip](http://gitzip.org/) to grab only this subtree)
+3. Extract the ZIP
+
+**Option B — Sparse checkout**
+
+```bash
+git clone --filter=blob:none --sparse https://github.com/Ankush-Chander/Tech-Talks.git
+cd Tech-Talks
+git sparse-checkout set graphs
+mv graphs/* . && rm -rf graphs
+```
+
+Then continue with:
+
+```bash
+# Install dependencies
 pip install -r requirements.txt
 
-# 3. Start the dev server
+# Start the dev server
 mkdocs serve
 ```
 
