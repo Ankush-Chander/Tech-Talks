@@ -1,5 +1,6 @@
 site_name: "Graphs – ACM Summer School 2026"
 docs_dir: docs
+site_url: https://Ankush-Chander.github.io/Tech-Talks/graphs/
 
 nav:
   - Home: index.md
@@ -21,7 +22,6 @@ nav:
       - Graph Modelling: sessions/graph_modelling.md
 
 plugins:
-  - to-pdf
   - search
   - slides
   - mkdocs-jupyter:
